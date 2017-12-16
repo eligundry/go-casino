@@ -9,7 +9,7 @@ pull:
 	docker pull $(TAG)
 
 test:
-	$(DOCKER_RUN) go test
+	$(DOCKER_RUN) go test -cover
 
 run:
 	$(DOCKER_RUN) go poker.go

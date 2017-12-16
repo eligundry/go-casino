@@ -5,23 +5,29 @@ import (
 )
 
 type TexasHoldem struct {
-	deck      deck.Deck
-	players   []Player
-	community []deck.Card
+	deck      *deck.Deck
+	players   *Players
+	dealer    *Player
+	community *deck.Deck
 	pot       int
 }
 
-func CreateTexasHoldemGame(players []Player) TexasHoldem {
+func NewTexasHoldemGame(players *Players) TexasHoldem {
 	cards, _ := deck.New()
+	community, _ := deck.New(deck.Empty)
 	game := TexasHoldem{
-		players: players,
-		deck:    *cards,
+		players:   players,
+		deck:      cards,
+		community: community,
+		dealer:    players.Dealer(),
 	}
 
 	// Deal all the players 2 cards
-	for i := 0; i < len(players); i++ {
-		// game.deck.Deal(2, players[i].hand)
-	}
+	DealCardsToPlayers(2, game.deck, game.players)
 
 	return game
+}
+
+func (game *TexasHoldem) DealToCommunity(count int) {
+	game.deck.Deal(count, game.community)
 }
